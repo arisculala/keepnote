@@ -2,11 +2,10 @@
   "name": "keepnote",
   "version": "1.0.0",
   "description": "A Basic Note CRUD API",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "dev": "nodemon server.js",
-    "start": "node server.js; node swagger.js",
-    "swagger-autogen": "node swagger.js"
+    "dev": "nodemon index.js",
+    "start": "node index.js"
   },
   "author": "arisculala",
   "license": "ISC",
@@ -15,12 +14,11 @@
     "express": "^4.17.1",
     "mongodb": "^3.6.4",
     "sqlite3": "^5.0.2",
-    "swagger-jsdoc": "^7.0.0-rc.5",
-    "swagger-ui-express": "^4.1.6"
+    "swagger-jsdoc": "5.0.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.7",
     "swagger-autogen": "^2.6.3",
-    "swagger-ui-express": "^4.1.4"
+    "swagger-ui-express": "^4.1.6"
   }
 }

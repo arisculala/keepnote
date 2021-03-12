@@ -4,11 +4,12 @@ const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
 module.exports = function(app, db) {
-    // Route to create a note
+    
     app.post('/notes', jsonParser, (req, res) => {
-        // #swagger.tags = ['Notes']
+       const title = req.body.title;
+       const body = req.body.body;
 
-        var values = [req.body.title, req.body.body];
+        var values = [title, body];
         const result = db.run('INSERT INTO Notes(title, body) VALUES (?, ?)', values, function (err) {
             if (err) {
                 return res.send({
@@ -19,6 +20,7 @@ module.exports = function(app, db) {
 
             db.all('SELECT * FROM Notes WHERE noteID = ?', this.lastID, function (err, rows) {
                 if (err) {
+                    console.log(err);
                     return res.send({
                         error_code: 'SERVER_ERROR',
                         message: 'Unknown error'
@@ -29,10 +31,7 @@ module.exports = function(app, db) {
         });
     });
 
-    // Route to get all notes
     app.get('/notes', jsonParser, (req, res) => {
-        // #swagger.tags = ['Notes']
-
         db.all('SELECT * FROM Notes', function (err, rows) {
             if (err) {
                 return res.send({
@@ -52,8 +51,6 @@ module.exports = function(app, db) {
 
     // Route to get specific note
     app.get("/notes/:id", jsonParser, (req, res) => {
-        // #swagger.tags = ['Notes']
-
         db.all(`SELECT * FROM Notes WHERE noteID='${req.params.id}'`, function (err, rows) {
             if (err) {
                 return res.send({
@@ -73,7 +70,6 @@ module.exports = function(app, db) {
 
     // Route to delete a specific note
     app.delete("/notes/:id", jsonParser, (req, res) => {
-        // #swagger.tags = ['Notes']
 
         db.all(`DELETE FROM Notes WHERE noteID='${req.params.id}'`, function (err, rows) {
             if (err) {
@@ -88,9 +84,10 @@ module.exports = function(app, db) {
 
     // Route to update a note
     app.put('/notes/:id', jsonParser, (req, res) => {
-        // #swagger.tags = ['Notes']
-        
-        db.all(`UPDATE Notes SET title='${req.params.title}', body='${req.params.body}' WHERE noteID='${req.params.id}'`, function (err, rows) {
+        const title = req.params.title;
+       const body = req.params.body;
+       const id = req.params.id;
+        db.all(`UPDATE Notes SET title='${title}', body='${body}' WHERE noteID='${id}'`, function (err, rows) {
             if (err) {
                 return res.send({
                     error_code: 'SERVER_ERROR',
@@ -100,4 +97,7 @@ module.exports = function(app, db) {
         });
         res.send('Successfully updated note!');
     });
+
+
+
 };
